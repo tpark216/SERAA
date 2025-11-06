@@ -1,0 +1,653 @@
+{
+  "metrics": {
+    "total_cases": 20,
+    "total_matches": 20,
+    "overall_accuracy": 1.0,
+    "flagged_for_review": 5,
+    "verdict_counts": {
+      "acceptable": 3,
+      "conditional": 5,
+      "problematic": 12
+    },
+    "by_framework": {
+      "EU AI Act": {
+        "total": 5,
+        "matches": 5,
+        "flagged_review": 2,
+        "acceptable": 0,
+        "conditional": 2,
+        "problematic": 3,
+        "cases": [
+          "Biased Hiring Algorithm",
+          "Compliant Loan Decision System",
+          "Facial Recognition Surveillance",
+          "Medical Diagnosis AI with Oversight",
+          "Social Scoring System"
+        ],
+        "accuracy": 1.0
+      },
+      "GDPR": {
+        "total": 5,
+        "matches": 5,
+        "flagged_review": 0,
+        "acceptable": 2,
+        "conditional": 0,
+        "problematic": 3,
+        "cases": [
+          "Facebook Cambridge Analytica",
+          "Google Location Tracking",
+          "Hospital Research Data Sharing",
+          "Amazon Alexa Voice Data",
+          "Healthcare App with Consent"
+        ],
+        "accuracy": 1.0
+      },
+      "HIPAA": {
+        "total": 5,
+        "matches": 5,
+        "flagged_review": 1,
+        "acceptable": 1,
+        "conditional": 1,
+        "problematic": 3,
+        "cases": [
+          "Anthem Data Breach",
+          "Approved De-identified Research",
+          "CVS Employee Snooping",
+          "Telemedicine with Consent",
+          "Premera Blue Cross Breach"
+        ],
+        "accuracy": 1.0
+      },
+      "NIST AI RMF": {
+        "total": 5,
+        "matches": 5,
+        "flagged_review": 2,
+        "acceptable": 0,
+        "conditional": 2,
+        "problematic": 3,
+        "cases": [
+          "Autonomous Vehicle Safety",
+          "Responsible Content Moderation AI",
+          "Predictive Policing without Oversight",
+          "Healthcare AI with Governance",
+          "Opaque Credit Scoring"
+        ],
+        "accuracy": 1.0
+      }
+    }
+  },
+  "results": [
+    {
+      "case_id": "ai_act_001",
+      "case_name": "Biased Hiring Algorithm",
+      "framework": "EU AI Act",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "transparency",
+        "fairness",
+        "human oversight",
+        "explainability",
+        "bias testing"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "Up to 6% of annual revenue",
+      "seraa_explanation": "The tech company's use of an AI system to screen job applications for technical roles is problematic because it shows systematic bias against women and minority candidates. The lack of transparency about the use of AI, no human oversight in decision-making, and the rejection of applicants without explanation violate basic ethical criteria (PAC < 0.4), fail to inform candidates about the fairness of their application process, and result in high harm levels due to discrimination. To improve, the company should audit the system for bias, provide clear explanations to rejected candidates, and ensure human oversight over hiring decisions.\n\nThe verdict is based on the PAC score (0/1) failing below 0.4, indicating a significant ethical violation; the unjustified harm level of 5/5 suggests severe discrimination against women and minorities; and the lack of consent and transparency violate ethical standards.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "ai_act_002",
+      "case_name": "Compliant Loan Decision System",
+      "framework": "EU AI Act",
+      "seraa_verdict": "CONDITIONAL",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": true,
+      "regulatory_fine": null,
+      "seraa_explanation": "The bank's AI loan application system falls short of ethical standards due to a low PAC score (0.30/1.0), indicating it may not be sufficiently transparent or fair, despite having some measures in place like regular audits and human review. The lack of consent for the use of AI and high harm level (2/5) further underscore its unethically significant nature. To improve, the bank should enhance transparency by ensuring clear communication about the AI's role and limitations to build trust among applicants and stakeholders. Additionally, they need to address potential biases in the data used and implement stronger safeguards against unfair outcomes.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "ai_act_003",
+      "case_name": "Facial Recognition Surveillance",
+      "framework": "EU AI Act",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "prohibited use",
+        "transparency",
+        "consent",
+        "impact assessment",
+        "oversight"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "Up to \u00e2\u201a\u00ac30 million or 6% of revenue",
+      "seraa_explanation": "The scenario presents a significant violation of basic ethical criteria (PAC < 0.4), fails to ensure transparency or consent from citizens, and poses a high level of harm without any impact assessment. The PAC score is notably low at 0.00/1.0, indicating that the system does not meet even minimal ethical standards for public safety measures. To improve the ethical standing, it would be crucial to implement proper oversight mechanisms, provide clear information about the system's operation and purpose, and conduct an impact assessment before deploying such technology without citizen consent or informed decision-making.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "ai_act_004",
+      "case_name": "Medical Diagnosis AI with Oversight",
+      "framework": "EU AI Act",
+      "seraa_verdict": "CONDITIONAL",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": true,
+      "regulatory_fine": null,
+      "seraa_explanation": "The hospital's use of AI in radiology is a high-risk scenario where patients' health outcomes depend significantly on the accuracy of the diagnosis. While the system is validated, its PAC score indicates it falls short of meeting the minimum required threshold for safety and reliability (0.4). The lack of consent from the patient and transparency regarding limitations are also significant ethical concerns. Although there is a clear documentation of AI limitations and accountability for human doctors in making final decisions, these factors do not meet the PAC requirement or reduce the harm level to acceptable levels. Therefore, the verdict recommends that further escalation be considered due to the low PAC score and potential harm without mitigating measures.\n\nTo improve ethical standing:\n1. Increase the PAC score by implementing rigorous validation processes.\n2. Obtain informed consent from patients about how AI is used in their care.\n3. Enhance transparency through clear communication of limitations and risks associated with using AI systems.\n4. Ensure that human oversight remains paramount, even when relying on AI for diagnosis.\n\nThese improvements would significantly enhance the ethical standing of the hospital's use of AI in radiology.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "ai_act_005",
+      "case_name": "Social Scoring System",
+      "framework": "EU AI Act",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "prohibited use",
+        "transparency",
+        "fairness",
+        "due process",
+        "human dignity"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "Up to \u00e2\u201a\u00ac30 million or 6% of revenue",
+      "seraa_explanation": "The PAC Score is 0.00/1.0 indicating a violation of basic ethical criteria (PAC < 0.4), as well as an unjustifiable harm level (Harm > 2). The system lacks transparency or consent, making it problematic and should not proceed. To improve the ethical standing, the company needs to ensure that individuals have access to information about their scores, a clear explanation of how they are calculated, and the ability to challenge or appeal decisions. Transparency is crucial for accountability and trustworthiness in AI systems.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "gdpr_001",
+      "case_name": "Facebook Cambridge Analytica",
+      "framework": "GDPR",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "consent",
+        "transparency",
+        "purpose limitation",
+        "data protection"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "\u00e2\u201a\u00ac1.2 billion",
+      "seraa_explanation": "The scenario presents a severe violation of user privacy and transparency by allowing data harvesting without explicit consent. The PAC score of 0.30/1.0 indicates that it falls short of the minimum required standard, as well as failing to meet the basic criteria for harm level (Harm > 2). Additionally, the lack of adequate safeguards further exacerbates the ethical issues. To improve the situation, Facebook should implement robust consent mechanisms and ensure full transparency in data usage practices, while also enhancing security measures to prevent unauthorized access or misuse of user information.",
+      "source_url": "https://www.enforcementtracker.com",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "gdpr_002",
+      "case_name": "Google Location Tracking",
+      "framework": "GDPR",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "transparency",
+        "consent",
+        "fair processing"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "\u00e2\u201a\u00ac90 million",
+      "seraa_explanation": "The scenario presents a clear violation of basic ethical criteria (PAC < 0.4), as Google did not adequately inform users about how location data was being used after disabling services, leading to false consent. The harm level is high at 5/5, indicating significant potential for privacy invasion without proper transparency or user agreement. This verdict indicates that the current practices are problematic and should be reconsidered.\n\nImprovements could include clearer communication of privacy policies, more prominent placement of settings options, and explicit notification when location data continues to be collected through alternative means like WiFi and cell tower data. Additionally, enhancing transparency in how users can opt out of tracking altogether would significantly enhance ethical standing.",
+      "source_url": "https://www.enforcementtracker.com",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "gdpr_003",
+      "case_name": "Hospital Research Data Sharing",
+      "framework": "GDPR",
+      "seraa_verdict": "ACCEPTABLE",
+      "seraa_pac_score": 0.6,
+      "seraa_violations": [
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The hospital's action of sharing de-identified patient health records with researchers is considered acceptable because it meets all ethical standards (PAC \u2265 0.4, Harm \u2264 2) while preserving human agency. However, there are no violations as the data was consented for research and access is controlled. The PAC score indicates a moderate level of harm due to potential misuse or unauthorized sharing, but this can be mitigated by robust security measures and clear communication with patients about how their information will be used.\n\nTo further improve ethical standing, the hospital could consider implementing additional layers of data protection, such as anonymization techniques beyond de-identification, and ensuring that researchers adhere strictly to the informed consent terms. Additionally, establishing a formal review process for research proposals can help prevent unintended harm or misuse of patient data.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": true,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": true,
+        "all_thresholds_met": true,
+        "safeguards_present": true
+      }
+    },
+    {
+      "case_id": "gdpr_004",
+      "case_name": "Amazon Alexa Voice Data",
+      "framework": "GDPR",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "transparency",
+        "purpose limitation",
+        "data minimization",
+        "user rights"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "\u00e2\u201a\u00ac746 million",
+      "seraa_explanation": "The scenario involves Amazon storing voice recordings from Alexa devices indefinitely without users' explicit consent, using them to enhance AI models, and employees having access to this data. This violates basic ethical criteria by failing to provide clear information about data retention and usage (PAC < 0.4), lacking transparency in how the data is used (Transparency = 0.00/1.0), and potentially causing significant harm if the AI models are biased or misused. The PAC score of 0.00/1.0 indicates a violation of ethical standards, with an unjustified harm level of 5/5, making it problematic and requiring immediate action to rectify.\n\nImprovements needed include:\n- Clearly informing users about data retention and usage policies.\n- Implementing strict access controls for employees.\n- Ensuring the AI models are unbiased and transparently used.",
+      "source_url": "https://www.enforcementtracker.com",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "gdpr_005",
+      "case_name": "Healthcare App with Consent",
+      "framework": "GDPR",
+      "seraa_verdict": "ACCEPTABLE",
+      "seraa_pac_score": 0.6,
+      "seraa_violations": [],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The healthcare app meets all ethical standards by ensuring clear consent through checkboxes, transparency regarding data collection and usage, encryption of data, and allowing users to delete their account at any time. This approach balances user autonomy with necessary safeguards against harm, making it acceptable based on the given thresholds. To further improve its ethical standing, consider implementing additional privacy features such as pseudonymization or differential privacy techniques for sensitive information like medical records.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": true,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": true,
+        "all_thresholds_met": true,
+        "safeguards_present": true
+      }
+    },
+    {
+      "case_id": "hipaa_001",
+      "case_name": "Anthem Data Breach",
+      "framework": "HIPAA",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "security",
+        "risk assessment",
+        "encryption"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "$16 million",
+      "seraa_explanation": "The PAC score of 0.00/1.0 indicates that Anthem Inc. failed to meet basic ethical criteria (PAC < 0.4), which is a fundamental requirement for handling sensitive data like PHI. The high harm level (5/5) suggests the breach could have severe consequences, and there was no consent or transparency provided to affected individuals. This scenario violates PAC ethics by failing to ensure minimum standards of security, lack of informed consent, and inadequate measures against potential harm.\n\nImproving this situation would require implementing robust cybersecurity practices, obtaining explicit consent from all affected parties, ensuring transparent communication about the breach, and conducting thorough risk assessments to prevent future incidents.",
+      "source_url": "https://www.hhs.gov/hipaa/for-professionals/compliance-enforcement/agreements/anthem/index.html",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "hipaa_002",
+      "case_name": "Approved De-identified Research",
+      "framework": "HIPAA",
+      "seraa_verdict": "CONDITIONAL",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": true,
+      "regulatory_fine": null,
+      "seraa_explanation": "The hospital's action is conditional due to a PAC score of 0.30, which falls below the minimum required threshold of 0.4 for ethical compliance with HIPAA regulations. While there are elements such as consent (false) and transparency (50/100), the high harm level (2/5) indicates that this scenario is not ethically acceptable under current conditions. Improvements would include enhancing patient privacy protections, ensuring informed consent, increasing transparency in data use, and reducing potential harm to patients.\n\nThis verdict highlights a balance between ethical compliance with HIPAA regulations and the need for improved safeguards against potential misuse of sensitive health information.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "hipaa_003",
+      "case_name": "CVS Employee Snooping",
+      "framework": "HIPAA",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "unauthorized access",
+        "minimum necessary",
+        "access controls"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "$2.25 million",
+      "seraa_explanation": "The scenario described involves CVS pharmacy employees accessing patient prescription records without authorization for personal reasons, which is a violation of patients' privacy and trust. The PAC score of 0.30/1.0 indicates that the organization failed to meet basic ethical criteria by not implementing adequate access controls or monitoring. This results in a Verdict stating \"PROBLEMATIC\" due to failing the minimum ethical standards (PAC < 0.4), as well as potential harm levels exceeding acceptable thresholds and lack of consent/transparency.\n\nTo improve the ethical standing, CVS should implement robust access control measures, ensure proper training for employees on privacy policies, and establish clear guidelines for accessing patient information. Additionally, they need to obtain explicit consent from patients before any data is accessed or shared without their knowledge.",
+      "source_url": "https://www.hhs.gov/hipaa/for-professionals/compliance-enforcement/examples/cvs-pharmacy-case/index.html",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "hipaa_004",
+      "case_name": "Telemedicine with Consent",
+      "framework": "HIPAA",
+      "seraa_verdict": "ACCEPTABLE",
+      "seraa_pac_score": 0.6,
+      "seraa_violations": [],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The telemedicine platform meets all ethical criteria with a PAC score of 0.60/1.0, which is acceptable given the minimum required score of 0.4. The consent forms are signed by patients, ensuring transparency, and only treating physicians have access to patient records, maintaining harm levels at 0 out of 5. The platform complies with state telemedicine laws, further enhancing its ethical standing. However, there could be improvements in increasing the level of transparency (e.g., through more detailed consent forms or public reporting on data usage) and possibly reducing the PAC score to meet a higher standard if needed.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": true,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": true,
+        "all_thresholds_met": true,
+        "safeguards_present": true
+      }
+    },
+    {
+      "case_id": "hipaa_005",
+      "case_name": "Premera Blue Cross Breach",
+      "framework": "HIPAA",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "risk analysis",
+        "security monitoring",
+        "encryption",
+        "intrusion detection"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": "$6.85 million",
+      "seraa_explanation": "The scenario describes a severe breach of patient privacy and financial information due to inadequate cybersecurity measures. The PAC score is low, indicating a failure in basic ethical criteria (PAC < 0.4), which requires immediate action to prevent further harm. The consent was false, the transparency was poor, and there was no risk assessment conducted, leading to an overall problematic situation that should not proceed. Improvements would include implementing robust cybersecurity protocols, conducting regular risk assessments, providing clear communication about data breaches, and obtaining informed consent from affected individuals.",
+      "source_url": "https://www.hhs.gov/about/news/2020/07/06/premera-blue-cross-pays-hipaa-settlement.html",
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "nist_001",
+      "case_name": "Autonomous Vehicle Safety",
+      "framework": "NIST AI RMF",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "safety",
+        "risk assessment",
+        "human control",
+        "testing",
+        "transparency"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The scenario presents significant ethical concerns regarding safety, transparency, and user consent. The lack of adequate testing in diverse conditions, absence of fail-safe mechanisms, limited edge case testing, no human override capability, and insufficient documentation of incidents all contribute to a high risk of harm without proper oversight or justification for the deployment. This violates basic ethical criteria (PAC < 0.4), fails transparency standards (transparency score is zero), and poses a severe threat level due to potential fatalities. To improve this situation, comprehensive safety testing should be conducted across various weather and road conditions, including edge cases, with transparent documentation of findings and user consent for deployment.\n\nThe PAC Score of 0.3 indicates that the company has not met the minimum ethical criteria required by the scenario. The harm level is at a maximum (5/5), suggesting severe potential consequences without proper safeguards. The lack of transparency and human override capability further exacerbate these issues, making it clear that this deployment should be halted to ensure public safety and ethical responsibility.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "nist_002",
+      "case_name": "Responsible Content Moderation AI",
+      "framework": "NIST AI RMF",
+      "seraa_verdict": "CONDITIONAL",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": true,
+      "regulatory_fine": null,
+      "seraa_explanation": "The social media platform's AI content moderation system, while demonstrating some positive features like regular audits of bias across languages and cultures, human review of edge cases, transparent community guidelines, user appeals, impact assessments, diverse training data, clear communication of limitations, and a PAC score below the minimum required threshold (0.4), has not met the ethical thresholds for consent, transparency, or harm minimization. The system's performance does not align with the stated requirements, indicating potential issues in its design and implementation that need to be addressed through further improvements.\n\nTo improve the ethical standing of this platform, it is crucial to ensure that all users have explicit consent regarding their data usage, including AI content moderation decisions. Transparency should be enhanced by clearly communicating how decisions are made and what criteria are used for them. Additionally, mitigating harm levels can be achieved by implementing more robust measures to minimize errors or biases in the AI system, possibly through additional human oversight or retraining of the AI models with a broader range of diverse data sources.\n\nThese improvements would help ensure that users' rights are respected, their privacy is protected, and the ethical standards required for such platforms are met.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "nist_003",
+      "case_name": "Predictive Policing without Oversight",
+      "framework": "NIST AI RMF",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "fairness",
+        "accountability",
+        "transparency",
+        "bias testing",
+        "community engagement"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The PAC Score of 0.30/1.0 indicates that the system fails to meet basic ethical criteria (PAC < 0.4) by not having an independent audit, which is crucial for ensuring fairness and accuracy in predictions. The Harm Level of 5/5 suggests severe harm due to unjustified surveillance practices targeting minority neighborhoods without community consultation or informed consent. Transparency was only at a moderate level with no public disclosure of the system's operation or errors. This scenario violates ethical standards by not obtaining proper consent from communities and lacking transparency, making it problematic and should not proceed.\n\nImprovements could include implementing an independent audit to ensure accuracy and fairness in predictions; conducting community consultations before using AI for surveillance; providing clear explanations and access to data used in the system; and ensuring accountability for any errors or biases identified.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "nist_004",
+      "case_name": "Healthcare AI with Governance",
+      "framework": "NIST AI RMF",
+      "seraa_verdict": "CONDITIONAL",
+      "seraa_pac_score": 0.3,
+      "seraa_violations": [
+        "pac_minimum"
+      ],
+      "regulatory_verdict": "compliant",
+      "regulatory_violations": [],
+      "verdict_match": true,
+      "flagged_for_review": true,
+      "regulatory_fine": null,
+      "seraa_explanation": "The healthcare system's use of AI to predict patient deterioration is ethically sound given that it has a comprehensive governance framework, regular validation across diverse populations, trained clinicians, clear escalation procedures when uncertain, continuous monitoring of outcomes, and transparent documentation. However, the PAC score of 0.30/1.0 falls short of the minimum required threshold of 0.4, indicating potential risks to patient safety that are not adequately mitigated. This results in a conditional verdict due to insufficient consent, transparency, or harm levels, which may necessitate further escalation monitoring rather than immediate implementation. To improve ethical standing, the system should aim for higher PAC scores and ensure comprehensive safeguards against harm while maintaining high standards of consent and transparency.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": true,
+        "transparency_threshold_met": true,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    },
+    {
+      "case_id": "nist_005",
+      "case_name": "Opaque Credit Scoring",
+      "framework": "NIST AI RMF",
+      "seraa_verdict": "PROBLEMATIC",
+      "seraa_pac_score": 0.0,
+      "seraa_violations": [
+        "pac_minimum",
+        "unjustified_harm"
+      ],
+      "regulatory_verdict": "violation",
+      "regulatory_violations": [
+        "explainability",
+        "fairness",
+        "transparency",
+        "accountability",
+        "due process"
+      ],
+      "verdict_match": true,
+      "flagged_for_review": false,
+      "regulatory_fine": null,
+      "seraa_explanation": "The provided scenario describes a fintech company using an AI model to determine credit scores without providing any explanation or transparency. The lack of human review, disclosure of data sources, and failure to test for discrimination across protected classes violate basic ethical criteria such as PAC (0/1), consent (False), and transparency (0/1). The harm level is 5 out of 5, indicating severe consequences. Given these violations, the verdict is PROBLEMATIC, failing to meet minimum standards in PAC score, consent, and transparency. To improve ethical standing, the company should implement clear explanations for decisions, disclose data sources, and ensure human review processes are in place.",
+      "source_url": null,
+      "threshold_analysis": {
+        "pac_threshold_met": false,
+        "harm_threshold_met": false,
+        "transparency_threshold_met": false,
+        "consent_obtained": false,
+        "all_thresholds_met": false,
+        "safeguards_present": false
+      }
+    }
+  ]
+}
