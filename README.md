@@ -231,8 +231,8 @@ Run with coverage
 pytest --cov=seraa --cov-report=html
 
 Run specific test suite
-pytest tests/test_core.py
-pytest tests/test_llm.py
+pytest tests/test_core_ternary.py
+pytest tests/test_agent.py
 
 
 

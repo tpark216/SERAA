@@ -175,7 +175,7 @@ class SeraaAgent:
         if not result.approved:
             reasons = []
             if not result.constraints_satisfied:
-                reasons.append(f"Constraints violated: {[v.constraint_name for v in result.constraint_violations]}")
+                reasons.append(f"Constraints violated: {[v.constraint.name for v in result.constraint_violations]}")
             if not result.uncertainty_acceptable:
                 reasons.append("Uncertainty too high")
             if not result.is_resonant:

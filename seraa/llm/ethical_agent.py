@@ -261,7 +261,7 @@ class EthicalLLMAgent:
             'seraa_result': seraa_result,
             'explanation': explanation,
             'constraints_satisfied': seraa_result.constraints_satisfied,
-            'violations': [v.constraint_name for v in seraa_result.constraint_violations],
+            'violations': [v.constraint.name for v in seraa_result.constraint_violations],
             'thresholds': self.get_threshold_info(),  # Include thresholds in result
             'threshold_analysis': self._get_threshold_analysis(params, verdict)
         }
@@ -369,7 +369,7 @@ class EthicalLLMAgent:
     ) -> str:
         """Generate human-readable explanation using LLM."""
         
-        violations = [v.constraint_name for v in seraa_result.constraint_violations]
+        violations = [v.constraint.name for v in seraa_result.constraint_violations]
         violation_text = f"\nViolations: {', '.join(violations)}" if violations else ""
         
         # Verdict-specific context with threshold references
