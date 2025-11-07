@@ -24,7 +24,9 @@ Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
-Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Programming Language :: Python :: 3.15Operating System :: OS Independent
 Classifier: Natural Language :: English
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
@@ -300,8 +302,8 @@ Run with coverage
 pytest --cov=seraa --cov-report=html
 
 Run specific test suite
-pytest tests/test_core.py
-pytest tests/test_llm.py
+pytest tests/test_core_ternary.py
+pytest tests/test_agent.py
 
 
 
