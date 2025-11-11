@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: seraa
-Version: 0.2.1
+Version: 0.2.3
 Summary: Stochastic Emergent Reasoning Alignment Architecture - Ethical AI Framework with PAC evaluation and regulatory benchmarks
 Home-page: https://github.com/tpark216/seraa
 Author: Theodore Park
@@ -24,9 +24,7 @@ Classifier: Programming Language :: Python :: 3.9
 Classifier: Programming Language :: Python :: 3.10
 Classifier: Programming Language :: Python :: 3.11
 Classifier: Programming Language :: Python :: 3.12
-Classifier: Programming Language :: Python :: 3.13
-Classifier: Programming Language :: Python :: 3.14
-Classifier: Programming Language :: Python :: 3.15Operating System :: OS Independent
+Classifier: Operating System :: OS Independent
 Classifier: Natural Language :: English
 Requires-Python: >=3.8
 Description-Content-Type: text/markdown
@@ -109,6 +107,11 @@ ollama pull qwen2.5:1.5b
 ### **2. Interactive Chat Interface**
 seraa-chat --framework buddhist --model qwen2.5:1.5b
 
+As a module:
+
+python -m seraa.cli.chat --framework virtue_ethics --model qwen2.5:1.5b
+
+You can replace the framework name with any of the frameworks listed or utilize the code to create a custom ethical agent based on your own values. Save as a separate file
 
 
 ### **3. Python API Usage**

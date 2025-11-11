@@ -237,13 +237,23 @@ class EthicalEvaluationResult:
         status = "APPROVED" if self.approved else "REJECTED"
         return f"EthicalEvaluationResult({status}, escalated={self.escalated})"
     
-    def to_dict(self) -> Dict[str, Any]:
-        """Convert to dictionary."""
+    def to_dict(self, all_constraints=None) -> Dict[str, Any]:
+        """Convert to dictionary, including violated and satisfied constraints for CLI."""
+        violated = [v.constraint.name for v in self.constraint_violations]
+        # get all constraint names: passed as a list, or from ConstraintSystem if available
+        if all_constraints is None and hasattr(self.action, "constraints"):
+            all_constraint_names = [c.name for c in self.action.constraints.constraints]
+        elif isinstance(all_constraints, list):
+            all_constraint_names = all_constraints
+        else:
+            all_constraint_names = []
+        satisfied = [c for c in all_constraint_names if c not in violated]
         return {
             'approved': self.approved,
             'escalated': self.escalated,
             'constraints_satisfied': self.constraints_satisfied,
-            'constraint_violations': [v.constraint_name for v in self.constraint_violations],
+            'violated_constraints': violated,
+            'satisfied_constraints': satisfied,
             'uncertainty_acceptable': self.uncertainty_acceptable,
             'is_resonant': self.is_resonant,
             'choice_preserved': self.choice_preserved,

@@ -14,7 +14,7 @@ long_description = (this_directory / "README.md").read_text(encoding='utf-8') if
 
 setup(
     name="seraa",
-    version="0.2.1",  # Incremented for new benchmark features
+    version="0.2.3",  # Incremented for new benchmark features
     author="Theodore Park",
     author_email="theodore.jb.park@gmail.com",  # Fixed double .com
     description="Stochastic Emergent Reasoning Alignment Architecture - Ethical AI Framework with PAC evaluation and regulatory benchmarks",
@@ -57,9 +57,6 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
-        "Programming Language :: Python :: 3.14",
-        "Programming Language :: Python :: 3.15"
         "Operating System :: OS Independent",
         "Natural Language :: English",
     ],
@@ -86,7 +83,7 @@ setup(
         ],
         "viz": [
             "matplotlib>=3.5.0",
-            "seaborn>=0.12.0",  # Added for benchmark visualizations
+            "seaborn>=0.12.0",  
         ],
         "benchmarks": [
             "matplotlib>=3.5.0",

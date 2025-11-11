@@ -31,6 +31,7 @@ seraa/axioms/superposition.py
 seraa/axioms/uncertainty.py
 seraa/cli/__init__.py
 seraa/cli/chat.py
+seraa/cli/constraint_explanations.py
 seraa/cli/evaluate.py
 seraa/core/__init__.py
 seraa/core/agent.py

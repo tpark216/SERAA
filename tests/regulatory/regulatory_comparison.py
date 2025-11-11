@@ -2,7 +2,7 @@
 Core testing framework for regulatory comparison
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Dict, Optional
 import json
 from pathlib import Path
@@ -22,7 +22,13 @@ class RegulatoryTestCase:
     fine: Optional[str] = None
     source_url: Optional[str] = None
     date: Optional[str] = None
+    domain: Optional[str] = None
+    extra: dict = field(default_factory=dict)
 
+    def __init__(self, **kwargs):
+        for field_name in self.__dataclass_fields__:
+            setattr(self, field_name, kwargs.pop(field_name, None))
+            self.extra = kwargs
 
 class RegulatoryTester:
     """Test SERAA against regulatory frameworks"""
@@ -33,10 +39,6 @@ class RegulatoryTester:
     
     def run_test_case(self, case: RegulatoryTestCase) -> Dict:
         """Run single test case and compare results"""
-        
-        print(f"\n{'='*70}")
-        print(f"Testing: {case.name} ({case.framework})")
-        print(f"{'='*70}")
         
         # Get SERAA evaluation
         seraa_result = self.agent.evaluate_question(case.scenario)
@@ -75,16 +77,21 @@ class RegulatoryTester:
             "threshold_analysis": seraa_result.get('threshold_analysis', {})
         }
         
-        # Print comparison
-        print(f"\n📋 Regulatory: {case.regulatory_verdict.upper()}")
+        # Defensive handling for possible UNKNOWN verdict
+        valid_verdicts = {"violation", "compliant"}
+        verdict_str = (case.regulatory_verdict or "UNKNOWN").upper()
+        print(f"\n📋 Regulatory: {verdict_str}")
         print(f"🤖 SERAA: {seraa_result['verdict']}")
-        
-        if verdict_match:
-            print(f"✓ Match: YES")
-        elif flagged_for_review:
-            print(f"⚠️ SERAA flagged for review (regulator compliant)")
+
+        if (case.regulatory_verdict or "").lower() in valid_verdicts:
+            if verdict_match:
+                print(f"✓ Match: YES")
+            elif flagged_for_review:
+                print(f"⚠️ SERAA flagged for review (regulator compliant)")
+            else:
+                print(f"✗ Match: NO")
         else:
-            print(f"✗ Match: NO")
+            print("No regulatory grounding for this case—excluded from accuracy metric.")
         
         print(f"\nPAC Score: {seraa_result['pac_score']:.2f}")
         
@@ -110,19 +117,32 @@ class RegulatoryTester:
     
     def calculate_metrics(self) -> Dict:
         """Calculate accuracy and alignment metrics"""
-        
+
         if not self.results:
             return {}
-        
-        total = len(self.results)
-        matches = sum(1 for r in self.results if r['verdict_match'])
-        flagged_review = sum(1 for r in self.results if r['flagged_for_review'])
-        
-        # Count by SERAA verdict type
+
+        valid_verdicts = {"violation", "compliant"}
+        results_to_score = [
+            r for r in self.results
+            if ((r['regulatory_verdict'] or '').lower() in valid_verdicts)
+                and (r.get('case_name') or r.get('case_id'))  # Must have name or number!
+                and ((r.get('case_name') or '').strip() or (str(r.get('case_id') or '').strip()))
+        ]
+        excluded_cases = [
+            r for r in self.results
+            if not ((r['regulatory_verdict'] or '').lower() in valid_verdicts
+                and (r.get('case_name') or r.get('case_id'))
+                and ((r.get('case_name') or '').strip() or (str(r.get('case_id') or '').strip())))
+        ]
+        total = len(results_to_score)
+        matches = sum(1 for r in results_to_score if r['verdict_match'])
+        flagged_review = sum(1 for r in results_to_score if r['flagged_for_review'])
+
+        # Count by SERAA verdict type, frameworks (keep as before)
         acceptable = sum(1 for r in self.results if r['seraa_verdict'] == 'ACCEPTABLE')
         conditional = sum(1 for r in self.results if r['seraa_verdict'] == 'CONDITIONAL')
         problematic = sum(1 for r in self.results if r['seraa_verdict'] == 'PROBLEMATIC')
-        
+
         accuracy = matches / total if total > 0 else 0
         
         # Breakdown by framework
@@ -159,10 +179,14 @@ class RegulatoryTester:
             frameworks[fw]['accuracy'] = frameworks[fw]['matches'] / frameworks[fw]['total']
         
         metrics = {
-            'total_cases': total,
+            'total_cases': len(self.results),
             'total_matches': matches,
             'overall_accuracy': accuracy,
             'flagged_for_review': flagged_review,
+            'excluded_cases': len(excluded_cases),                     
+            'excluded_case_summaries': [
+                get_case_summary(r) for r in excluded_cases
+            ],
             'verdict_counts': {
                 'acceptable': acceptable,
                 'conditional': conditional,
@@ -170,9 +194,31 @@ class RegulatoryTester:
             },
             'by_framework': frameworks
         }
-        
+
         return metrics
     
+    def get_case_summary(case):
+        # Prefer 'case_name', then 'title', then fallback to scenario snippet
+        name = case.get('case_name') or case.get('title') or ''
+        name = name.strip()
+        if name:
+            return name
+        scenario = case.get('scenario') or case.get('question') or ''
+        if scenario:
+            return scenario[:60] + '...'
+        return "(no case name/title, no scenario)"
+
+    def print_case_explanations(self, only_excluded=False):
+        print("\nDETAILED CASE EXPLANATIONS")
+        for r in self.results:
+            is_excluded = (r['regulatory_verdict'] or '').lower() not in {'violation', 'compliant'}
+            if only_excluded and not is_excluded:
+                continue
+        print(f"\nCase: {r['case_name']}")
+        print(f"Scenario: {r.get('scenario', '<not recorded>')}")
+        print(f"SERAA Verdict: {r['seraa_verdict']}, Regulatory: {r['regulatory_verdict']}")
+        print(f"Explanation:\n{r['seraa_explanation']}\n{'-'*40}")
+
     def print_summary(self):
         """Print summary statistics"""
         
@@ -182,6 +228,7 @@ class RegulatoryTester:
         print("SUMMARY METRICS")
         print(f"{'='*70}")
         print(f"Total Cases: {metrics['total_cases']}")
+        print(f"Excluded (unknown/edge/no regulatory label): {metrics['excluded_cases']}")
         print(f"Verdict Matches: {metrics['total_matches']}")
         print(f"Overall Accuracy: {metrics['overall_accuracy']:.1%}")
         print(f"Flagged for Review: {metrics['flagged_for_review']}")
@@ -197,7 +244,12 @@ class RegulatoryTester:
             print(f"    Matches: {stats['matches']}/{stats['total']} ({stats['accuracy']:.1%})")
             print(f"    Flagged for Review: {stats['flagged_review']}")
             print(f"    Verdicts: ✅{stats['acceptable']} ⚠️{stats['conditional']} ❌{stats['problematic']}")
-        
+        print(f"Excluded (unknown/edge/no regulatory label or lacking case name/ID): {metrics['excluded_cases']}")
+        if metrics['excluded_cases'] > 0:
+            print("Excluded cases (not scored):")
+            for name in metrics['excluded_case_names']:
+                print(f" - {name}")
+
         return metrics
     
     def save_results(self, filepath: str = "regulatory_test_results.json"):
@@ -216,18 +268,53 @@ class RegulatoryTester:
         print(f"\n✓ Results saved to {filepath}")
 
 
-def load_test_cases_from_json(filepath: str) -> List[RegulatoryTestCase]:
-    """Load test cases from JSON file"""
+    def load_test_cases_from_json(filepath: str) -> List[RegulatoryTestCase]:
+        """Load test cases from JSON file"""
+        
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+        
+        cases = []
+        for case_data in data['cases']:
+            case = RegulatoryTestCase(**case_data)
+            cases.append(case)
+        
+        return cases
     
-    with open(filepath, 'r') as f:
-        data = json.load(f)
-    
-    cases = []
-    for case_data in data['cases']:
-        case = RegulatoryTestCase(**case_data)
-        cases.append(case)
-    
-    return cases
+def run_regulatory_benchmarks(
+    model: str = "qwen2.5:1.5b",
+    backend: str = "ollama",
+    pac_minimum: float = 0.4,
+    harm_threshold: int = 2,
+    transparency_min: float = 0.5
+):
+    """Run only regulatory benchmarks (EXCLUDING edge/unseen cases)."""
+    agent = EthicalLLMAgent(
+        llm_backend=backend,
+        model=model,
+        seraa_domain="general",
+        pac_minimum=pac_minimum,
+        harm_threshold=harm_threshold,
+        transparency_min=transparency_min
+    )
+
+    print(f"\n{'='*70}")
+    print("SERAA REGULATORY BENCHMARKS ONLY")
+    print(f"{'='*70}")
+    print(f"\nThreshold Configuration:")
+    print(f"  PAC Minimum: {pac_minimum}")
+    print(f"  Harm Threshold: {harm_threshold}")
+    print(f"  Transparency Minimum: {transparency_min}")
+
+    tester = RegulatoryTester(agent)
+    benchmark_dir = Path(__file__).parent.parent / "benchmarks"
+
+    all_cases = load_cases(include_unseen=False)
+    print(f"  Loaded {len(all_cases)} cases")
+    tester.run_test_suite(all_cases)
+    tester.print_summary()
+    tester.save_results("regulatory_benchmark_results.json")
+    return tester.results
 
 
 def run_all_tests(
@@ -238,8 +325,7 @@ def run_all_tests(
     transparency_min: float = 0.5
 ):
     """Run all regulatory tests with configurable thresholds"""
-    
-    # Initialize agent with thresholds
+
     agent = EthicalLLMAgent(
         llm_backend=backend,
         model=model,
@@ -248,7 +334,7 @@ def run_all_tests(
         harm_threshold=harm_threshold,
         transparency_min=transparency_min
     )
-    
+        
     print(f"\n{'='*70}")
     print("SERAA REGULATORY VALIDATION SUITE")
     print(f"{'='*70}")
@@ -256,30 +342,37 @@ def run_all_tests(
     print(f"  PAC Minimum: {pac_minimum}")
     print(f"  Harm Threshold: {harm_threshold}")
     print(f"  Transparency Minimum: {transparency_min}")
-    
+        
     tester = RegulatoryTester(agent)
-    
-    # Load all test suites
+        
+
     benchmark_dir = Path(__file__).parent.parent / "benchmarks"
-    
-    all_cases = []
-    for json_file in benchmark_dir.glob("*.json"):
-        print(f"\nLoading: {json_file.name}")
-        cases = load_test_cases_from_json(json_file)
-        all_cases.extend(cases)
-        print(f"  Loaded {len(cases)} cases")
-    
-    # Run tests
+        
+    all_cases = load_cases(include_unseen=True)
+    print(f"\nLoaded {len(all_cases)} cases total (regulatory + edge/unseen).\n")
     tester.run_test_suite(all_cases)
-    
-    # Print summary
     tester.print_summary()
-    
-    # Save results
     tester.save_results()
-    
     return tester.results
 
+def load_cases(include_unseen: bool = False):
+    benchmark_dir = Path(__file__).parent.parent / "benchmarks"
+    cases = []
+    for json_file in benchmark_dir.glob("*.json"):
+        if not include_unseen and "unseen" in json_file.name.lower():
+            continue
+        print(f"Loading: {json_file.name}")
+        new_cases = load_test_cases_from_json(json_file)
+        cases.extend(new_cases)
+        print(f"  Loaded {len(new_cases)} cases")
+    return cases
 
 if __name__ == "__main__":
-    run_all_tests()
+    print("\nChoose test mode:")
+    print("  1. Run REGULATORY BENCHMARKS ONLY (official benchmarks, excludes 'unseen' cases)")
+    print("  2. Run ALL TESTS (regulatory + edge/unseen cases)")
+    mode = input("Select mode [1/2, default 1]: ").strip() or "1"
+    if mode == "2":
+        run_all_tests()
+    else:
+        run_regulatory_benchmarks()

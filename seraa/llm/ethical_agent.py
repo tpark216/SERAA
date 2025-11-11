@@ -195,16 +195,13 @@ class EthicalLLMAgent:
             
             # Standard case: Meets all thresholds
         if pac_score >= self.pac_minimum and harm_level <= self.harm_threshold:
-            return "ACCEPTABLE"
-        
-            # Has consent and transparency safeguards
-        elif consent_obtained and transparency >= self.transparency_min:
-            return "CONDITIONAL"
-        
+            if transparency >= self.transparency_min and consent_obtained:
+                return "ACCEPTABLE"
+            else:
+                return "CONDITIONAL"
             # Fails basic criteria
         else:
             return "PROBLEMATIC"
-
     
     def evaluate_question(self, question: str) -> Dict[str, Any]:
         """Evaluate an ethical question through LLM + SERAA pipeline."""
@@ -323,7 +320,7 @@ class EthicalLLMAgent:
     * TRUE if: "informed consent", "patients consented", "users agree",
         "IRB approval", "ethics board approved", "participants signed consent forms",
         "explicit consent", "opt-in", "users must actively consent", "IRB approved", "de-identified", "informed AI is used", "informed AI assists"
-    * FALSE if: "without consent", "not informed", "unaware", "no consent", "no human oversight", "no transparency"
+    * FALSE if: "without consent", "not informed", "unaware", "no consent", "no human oversight", "no transparency", "did not inform", "data collected secretly", "data used without permission", "data shared without consent"
 
     - harm_level (0-5): Severity of potential negative impact
     * 0: No harm (de-identified data, no risk, well-protected)
@@ -393,8 +390,16 @@ Explain the verdict based on these thresholds and what would improve the ethical
 Response:"""
 
         explanation = self._call_llm(explanation_prompt)
+        if not explanation or not explanation.strip() or explanation.strip().lower().startswith("error"):
+            fallback = [
+                "No model-generated explanation available.",
+                "This scenario was judged PROBLEMATIC due to failure to meet ethical thresholds."
+                "Such as PAC SCore, Harm Lvel, or lack of consent/tranparency."
+                "See metrics above for specific ethical risks."                                                                                                                                                                                           
+            ]
+            return fallback
         return explanation.strip()
-    
+ 
     def _call_llm(self, prompt: str) -> str:
         """Call LLM backend."""
         
@@ -479,6 +484,7 @@ Response:"""
         except Exception as e:
             return f"Error calling Anthropic: {e}"
     def _boost_consent_transparency(self, scenario: str, params: Dict[str, Any]) -> Dict[str, Any]:
+        scenario_lower = scenario.lower()
         """
         Post-LLM rule-based boost for consent and transparency.
         
@@ -487,33 +493,77 @@ Response:"""
         """
         scenario_lower = scenario.lower()
         
+        # Check for future preservation signals
+        emergency_signals = [
+            "critical pain", "imminent organ failure", "life-threatening",
+            "life at risk", "unconscious", "medical emergency", "cannot communicate"
+        ]
+        # Advance Directives to prevent harm to agency
+        advance_directive_signals = [
+            "advance directive", "living will", "do not resuscitate", "dnr",
+            "power of attorney", "healthcare proxy", "medical directive",
+            "no heroic",
+        ]
+
+        has_emergency = any(signal in scenario_lower for signal in emergency_signals)
+        has_advance_directive = any(signal in scenario_lower for signal in advance_directive_signals)
+
+        if has_emergency and not has_advance_directive:
+            print("  ⚙️ Emergency scenario with no known directive: preserving life/future agency prioritized.")
+            if params.get('pac_score', 0) < 0.4:
+                params['pac_score'] = 0.5
+            if params.get('harm_level', 0) > 2:
+                print("  ⚙️ Lowering harm due to ethically justified intervention.")
+                params['harm_level'] = 1
+
+        elif has_advance_directive:
+            print("  ⚙️ Advance directive present: respecting prior wishes.")
+            if params.get('pac_score', 0) > 0.4:
+                params['pac_score'] = 0.3
+            if params.get('harm_level', 0) < 3:
+                print("  ⚙️ Raising harm due to intervention against known will.")
+                params['harm_level'] = 3
+
         # Consent signal keywords
         consent_signals = [
-            'informed consent',
-            'patients consented',
-            'users consent',
-            'explicitly consent',
-            'signed consent',
-            'irb approval',
-            'ethics board approved',
-            'participants provided consent',
-            'opt-in',
-            'actively consent',
-            'consent forms'
+            'informed consent','patients consented','users consent','explicitly consent',
+            'signed consent','irb approval','ethics board approved','participants provided consent',
+            'opt-in','actively consent','consent forms'
         ]
         
         # Transparency signal keywords
         transparency_signals = [
-            'clearly explains',
-            'transparent',
-            'users informed',
-            'full disclosure',
-            'openly communicated',
-            'clear documentation',
-            'explicit about',
-            'publicly disclosed',
-            'transparent documentation'
+            'clearly explains','transparent','users informed','full disclosure','openly communicated',
+            'clear documentation','explicit about','publicly disclosed','transparent documentation',
+            'end-to-end encryption','privacy policy explained','data usage disclosed'
         ]
+
+        # Lack/Negation of transparency signals
+        negative_transparency_signals = [
+            "black box","black-box","no explanation","no human review","no process",
+            "opaque process","data sources not disclosed","undocumented","not explained",
+            "no documentation","unclear terms","not publicly available","algorithmic secrecy",
+            "proprietary algorithm","hidden logic","not open source","lack of transparency",
+            "withheld documentation","undisclosed method","no human oversight","does not inform",
+            "data collected secretly","data used without permission","data shared without consent",
+            "ignores", "disregards", "overlooks", "fails to inform", "fails to disclose"
+        ]
+
+        # Check for negative transparency signals
+        count_neg = sum(1 for neg in negative_transparency_signals if neg in scenario_lower)
+        decrement_per_signal = 0.1
+        min_score = 0
+        if count_neg > 0:
+            old_score = params.get('transparency', 1.0)
+            new_score = max(min_score, old_score - decrement_per_signal * count_neg)
+            print(f"  ⚙️ Lowering transparency from {old_score:.2f} to {new_score:.2f} ({count_neg} negative signals)")
+            params['transparency'] = new_score
+
+            harm_increase_per_signal = 0.5
+            old_harm = params.get('harm_level', 0)
+            new_harm = min(5, old_harm + int(harm_increase_per_signal * count_neg))
+            print(f"  ⚙️ Raising harm level from {old_harm} to {new_harm} due to lack of transparency")
+            params['harm_level'] = new_harm
         
         # Check for consent signals
         if any(signal in scenario_lower for signal in consent_signals):
@@ -611,4 +661,7 @@ Response:"""
     Response:"""
         
         detailed_explanation = self._call_llm(explanation_prompt)
+        if not explanation or not explanation.strip() or explanation.strip().lower().startswith("error"):
+            fallback = "No model-generated explanation available. Please refer to the original verdict and parameters for details."
+            return fallback
         return detailed_explanation.strip()

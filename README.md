@@ -38,6 +38,11 @@ ollama pull qwen2.5:1.5b
 ### **2. Interactive Chat Interface**
 seraa-chat --framework buddhist --model qwen2.5:1.5b
 
+As a module:
+
+python -m seraa.cli.chat --framework virtue_ethics --model qwen2.5:1.5b
+
+You can replace the framework name with any of the frameworks listed or utilize the code to create a custom ethical agent based on your own values. Save as a separate file
 
 
 ### **3. Python API Usage**
